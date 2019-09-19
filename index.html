@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Space Invader Clone</title>
+</head>
+
+<body>
+  <div class="game">
+    <div class="context">
+      <div>
+        <button id="start-button">START GAME</button>
+      </div>
+      <p class="command">Commands:</p>
+      <div class="commands">
+        <div class="arrow-div">
+          <img src="./images/arrow-l.png" class="arrow">
+          <img src="/images/arrow-r.png" class="arrow">
+        </div>
+        <p>Turn Left and Turn Rght</p>
+        <p><span>A</span> Attack</p>
+      </div>
+    </div>
+    <div id="intro">
+      <p>Este game é baseado no clássico Space Invaders.</p> 
+        <p>Space Invaders é um jogo de videogame de arcade desenhado por Tomohiro Nishikado e lançado em 1978.</p> 
+        <p>Foi originalmente construído pela Taito Corporation e um tempo depois foi licenciado para produção nos Estados Unidos pela Midway Games.</p> 
+        <p>Space Invaders foi um dos primeiros jogos de tiro com gráfico bidimensional. O objetivo é destruir ondas de naves com uma espaçonave humana para ganhar o maior número de pontos possível. Para construir o jogo, Nishikado se inspirou na mídia popular, como Guerra dos Mundos e Star Wars.</p>
+    </div>
+    <div id="game-board">
+      <canvas id="canvas" height="500" width="700"></canvas>
+    </div>
+  </div>
+  <script src="./script.js"></script>
+  <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+</body>
+
+</html>
