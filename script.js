@@ -12,23 +12,22 @@ window.onload = function () {
 }
 
 ctx.fillStyle = 'white';
-// ctx.font = '18px serif';
 
 let arrShoot = []
 
-let enemy = []
+let arrEnemy = []
 
 let enemyImg = new Image()
-enemyImg.src = "./images/enemy.png"
+enemyImg.src = "./images/enemy2.png"
 
 let nave = {
-  x: 350,
+  x: 325,
   y: 440,
   moveLeft: function () {
-    this.x -= 5
+    this.x -= 10
   },
   moveRight: function () {
-    this.x += 5
+    this.x += 10
   },
 }
 
@@ -49,16 +48,14 @@ class Shoot {
   }
 
   drawShoot() {
-    ctx.fillRect(this.x, this.y - 10, 3, 10);
+    ctx.fillRect(this.x, this.y - 10, 1, 10);
 
   }
 }
 
-
 function shooting(bullet) {
   arrShoot.push(new Shoot(nave.x + 24, nave.y))
 }
-
 
 function clearCanvas() {
   ctx.clearRect(0, 0, 700, 500);
@@ -68,11 +65,9 @@ document.onkeydown = function (e) {
   switch (e.keyCode) {
     case 37:
       nave.moveLeft();
-      // console.log('left', nave);
       break;
     case 39:
       nave.moveRight();
-      // console.log('right', nave);
       break;
     case 65:
       shooting();
@@ -100,7 +95,6 @@ function updateNave() {
   } else if (nave.x >= 650) {
     nave.x = 650
   }
-  // draw(nave)
 }
 
 function updateShoot() {
@@ -108,21 +102,19 @@ function updateShoot() {
     bullet.y -= 3;
     bullet.drawShoot()
   })
-
-  // window.requestAnimationFrame(updateShoot);
 }
 
 let frame = 0;
 
 function createEnemy() {
-  if (frame % 120 === 0) {
-    let randomX = Math.random() * canvas.width;
-    enemy.push(new Enemy(randomX, -50));
+  if (frame % 160 === 0) {
+    let randomX = Math.random() * 650;
+    arrEnemy.push(new Enemy(randomX, -50));
   }
 }
 
 function updateEnemy() {
-  enemy.forEach(elem => {
+  arrEnemy.forEach(elem => {
     elem.y += 1;
     elem.drawEnemy()
   })
@@ -132,46 +124,54 @@ let score = 0
 
 function checkShooted() {
   for (let i = 0; i < arrShoot.length; i += 1) {
-    for (let w = 0; w < enemy.length; w += 1) {
-      if (arrShoot[i].y === enemy[w].y + 30 && arrShoot[i].x >= enemy[w].x && arrShoot[i].x <= enemy[w].x + 40) {
-        enemy.splice(w, 1)
+    for (let w = 0; w < arrEnemy.length; w += 1) {
+      if (arrShoot[i].y === arrEnemy[w].y + 30 && arrShoot[i].x >= arrEnemy[w].x && arrShoot[i].x + 1 <= arrEnemy[w].x + 40) {
+        arrEnemy.splice(w, 1)
         score += 100
       }
     }
   }
 }
 
-let count = 0;
+let count = 3;
 let flag = true;
 
 function gameover() {
-  enemy.forEach((elem, indice) => {
+  arrEnemy.forEach((elem, indice) => {
     if (elem.y > 500) {
-      count += 1;
-      enemy.splice(indice,1)
+      count -= 1;
+      arrEnemy.splice(indice,1)
     }
   })
-  if(count === 3){
+  if(count === 0){
     flag = false;
+    ctx.font = "60px Turret Road";
+    ctx.fillStyle = "#fff";
+    ctx.fillText(`GAMEOVER`, 200, 220);
+    sound.pause()
   }
 }
 
+let sound = new Audio('./music/music2.mp3')
 
 const start = () => {
   if(flag){
     frame += 1;
+    sound.play()
     clearCanvas();
+    ctx.font = "20px Turret Road";
+    ctx.fillText(`HP: ${count} `, 20, 40);
+    ctx.fillText(`SCORE: ${score} `, 565, 40);
     draw(nave);
     updateShoot();
     updateEnemy()
     createEnemy()
     checkShooted()
-    ctx.fillText(`SCORE: ${score} `, 580, 40);
     window.requestAnimationFrame(start);
     gameover();
   } else {
+    ctx.font = "20px Turret Road";
+    ctx.fillText(`HP: ${count} `, 20, 40);
     cancelAnimationFrame(start)
   }
 }
-
-// start();
